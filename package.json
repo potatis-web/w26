@@ -13,7 +13,7 @@
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-auto": "^8.0.0-next.3",
-		"@sveltejs/kit": "^3.0.0-next.0",
+		"@sveltejs/kit": "^3.0.0-next.27",
 		"@sveltejs/vite-plugin-svelte": "^7.2.0",
 		"@tailwindcss/forms": "^0.5.11",
 		"@tailwindcss/typography": "^0.5.19",
@@ -31,6 +31,7 @@
 	"dependencies": {
 		"@emilien/kebab-case": "npm:@jsr/emilien__kebab-case@^0.1.4",
 		"@grilymannen/grily-utils": "github:grilymannen/grily-utils",
+		"@sveltejs/adapter-node": "^6.0.0-next.12",
 		"valibot": "^1.4.2"
 	}
 }
