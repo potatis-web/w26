@@ -24,6 +24,6 @@ export const load = (async ({ cookies, url }) => {
  * 
  * 
  * 
- * 
+ * -> = Go to path
  * 
  */

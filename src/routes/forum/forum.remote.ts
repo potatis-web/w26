@@ -1,45 +1,27 @@
-import { query, command, form } from "$app/server";
-import { kebabCase } from "@emilien/kebab-case";
+import { query, form } from "$app/server";
 import * as v from 'valibot'
-import type { ForumType, MessageType } from "#lib/types.ts";
+import { db } from "../../prisma/db";
 
-const forums: ForumType[] = [
-  forumObj("First forum")
-];
+export const getForums = query(async () => await db.orm.public.Forum.all());
 
-function forumObj(text: string): ForumType {
-  return {
-    text: text,
-    path: `/forum/${kebabCase(text)}`,
-    messages: []
-  }
-}
 
-function messageObj(text: string): MessageType {
-  return {
-    text: text,
-    date: new Date()
-  }
-}
+export const getForumText = query(v.string(), async (id: string) => {
+  return await db.orm.public.Forum.where({ id }).first();
+});
 
-export const getForums = query(async () => forums);
-
-const forumFind = (path: string) => {
-  return forums.find((forum) => kebabCase(forum.text) === path)
-}
-
-export const getForumByPath = query(v.string(), forumFind)
+export const getMessages = query(v.string(), async (forumid: string) => {
+  return await db.orm.public.Message.where({ forumid }).all();
+});
 
 export const createMessage = form(v.object({
   text: v.string(), 
-  path: v.string()
-}), async ({ text, path }) => {
-  const target = forumFind(path);
-  target?.messages.push(messageObj(text));
+  forumid: v.string()
+}), async ({ text, forumid }) => {
+  await db.orm.public.Message.create({ forumid, text })
 });
 
 export const createForum = form(v.object({
   text: v.string()
-}), async ({text}) => {
-  forums.push(forumObj(text))
+}), async ({ text }) => {
+  db.orm.public.Forum.create({ text })
 });

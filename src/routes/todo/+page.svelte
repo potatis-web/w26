@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { getTodos, addTodo, deleteTodo, toggleComplete } from './todos.remote';
   import { slide, fade } from 'svelte/transition';
+	let { text } = addTodo.fields;
 </script>
 
 <div class="w-1/2 p-2 prose">
@@ -22,7 +23,7 @@
       </div>
 			<button
 			class="cursor-pointer rounded border p-2 hover:bg-black/10 active:bg-black/30 overflow-hidden"
-			onclick={() => toggleComplete(todo.id)}
+			onclick={() => toggleComplete({id: todo.id, completed: todo.completed})}
 			>✅</button>
 			<button
 				class="cursor-pointer rounded border p-2 hover:bg-black/10 active:bg-black/30 overflow-hidden"
@@ -40,7 +41,7 @@
 
 	<form class="flex gap-2 p-2" {...addTodo}>
 		<div class="flex flex-1 flex-col">
-			<input class="w-1/1 rounded border p-2" {...addTodo.fields.myField.as('text')} />
+			<input class="w-1/1 rounded border p-2" {...text.as('text')} />
 		</div>
 
 		<button class="cursor-pointer rounded border p-2 hover:bg-black/10 active:bg-black/30"

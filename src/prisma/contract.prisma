@@ -1,0 +1,35 @@
+// use prisma-8
+
+// ||=========||=========||==================================||
+// ||  Field  ||  Type   ||              Params              ||
+// ||=========||=========||==================================||
+model Todo {
+    id          String      @unique @id @default(uuid())
+    text        String  
+    completed   Boolean     @default(false)
+}
+
+model Forum {
+    id          String      @unique @id @default(uuid())
+    text        String
+    messages    Message[]
+    created_at  DateTime    @default(now())
+
+}
+
+model Message {
+    id          String      @unique @id @default(uuid())
+    text        String
+    forum       Forum       @relation(fields: [forumid], references: [id])
+    forumid     String
+    created_at  DateTime    @default(now())
+    updated_at  DateTime    @default(now()) 
+}
+
+model User {
+    id          String      @unique @id @default(uuid())
+    name        String      
+    salt        String
+    hash        String
+    created_at  DateTime    @default(now())
+}

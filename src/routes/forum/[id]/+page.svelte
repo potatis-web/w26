@@ -1,33 +1,49 @@
 <script lang="ts">
-  import type { ForumType } from "#lib/types.ts";
-
-  import { getForumByPath, createMessage } from "../forum.remote";
-  import { formatTimeHM } from "@grilymannen/grily-utils";
+  import { getForumText, createMessage, getMessages } from "../forum.remote";
 
   
   let { params } = $props()
 
-  const response = $derived(await getForumByPath(params.id));
-  const { text, path } = createMessage.fields;
+  // const forum = $derived(await getForumById(params.id));
+  const { text, forumid } = createMessage.fields;
+  function formatTemporal(instant: Temporal.Instant | undefined): string {
+    if (!instant) return "";
+    const now = Temporal.Now.zonedDateTimeISO()
+    const ztd = instant.toZonedDateTimeISO(Temporal.Now.timeZoneId())
+    const time = `${String(ztd.hour).padStart(2,"0")}:${ztd.minute}`
 
+    const isToday = now.year === ztd.year && now.dayOfYear === ztd.dayOfYear;
+    const isYesterday = now.year === ztd.year && now.dayOfYear - 1 === ztd.dayOfYear; 
+    if (isToday) {
+      return `Today at ${time}`
+    }
+    if (isYesterday) {
+      return `Yesterday at ${time}`
+    }
+
+    return `${ztd.year}/${ztd.month}/${ztd.day}`
+  }
 </script>
 <main class="prose h-screen flex flex-col p-4">
   <a href={"/forum"}>Back to Forums</a>
-  {#if response}
-    {const forum: ForumType = $derived(response)}
-    <h1>{forum.text}</h1>
-    <h2>Messages</h2>
-    <div class="overflow-y-scroll flex-1">
-      {#each forum.messages as message}
+    {#if params.id}
+      {let forum = $derived(await getForumText(params.id))}
+      <h1>{forum?.text ?? "a"}</h1>
+      <h2>created: <i>{formatTemporal(forum?.created_at)}</i></h2>
+      <h2>Messages</h2>
+      <div class="overflow-y-scroll flex-1">
+        {#each await getMessages(params.id) as message}
         <div class="flex item-center p-2 hover:bg-black/10 rounded ">
-          <p class="text-black/50">{formatTimeHM(message.date)}</p>
+        
+          <p class="text-black/50">{formatTemporal(message.created_at)}</p>
           <h3 class="">{message.text}</h3>
         </div>
-      {/each}
-    </div>
-  {/if}
-  <form {...createMessage}>
-    <input {...text.as("text")} class="w-1/1" autocomplete="off">
-    <input {...path.as("hidden", params.id)} >
-  </form>
+        {/each}
+      </div>
+      
+      <form {...createMessage}>
+        <input {...text.as("text")} class="w-1/1" autocomplete="off">
+        <input {...forumid.as("hidden", params.id)} >
+      </form>
+    {/if}
 </main>

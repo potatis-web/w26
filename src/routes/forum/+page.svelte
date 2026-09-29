@@ -8,7 +8,7 @@
   <ul>
     {#each await getForums() as forum}
       <li>
-        <a href={forum.path}>{forum.text}</a>
+        <a href={`forum/${forum.id}`}>{forum.text}</a>
       </li>
     {/each}
   </ul>

@@ -1,37 +1,48 @@
 {
-	"name": "forum",
-	"private": true,
-	"version": "0.0.1",
-	"type": "module",
-	"scripts": {
-		"dev": "vite dev",
-		"build": "vite build",
-		"preview": "vite preview",
-		"prepare": "svelte-kit sync || echo ''",
-		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
-		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
-	},
-	"devDependencies": {
-		"@sveltejs/adapter-auto": "^8.0.0-next.3",
-		"@sveltejs/kit": "^3.0.0-next.27",
-		"@sveltejs/vite-plugin-svelte": "^7.2.0",
-		"@tailwindcss/forms": "^0.5.11",
-		"@tailwindcss/typography": "^0.5.19",
-		"@tailwindcss/vite": "^4.3.0",
-		"svelte": "^5.56.7",
-		"svelte-check": "^4.6.0",
-		"tailwindcss": "^4.3.0",
-		"typescript": "^6.0.3",
-		"vite": "^8.1.5"
-	},
-	"imports": {
-		"#lib": "./src/lib/index.js",
-		"#lib/*": "./src/lib/*"
-	},
-	"dependencies": {
-		"@emilien/kebab-case": "npm:@jsr/emilien__kebab-case@^0.1.4",
-		"@grilymannen/grily-utils": "github:grilymannen/grily-utils",
-		"@sveltejs/adapter-node": "^6.0.0-next.12",
-		"valibot": "^1.4.2"
-	}
+  "name": "forum",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "dev": "vite dev",
+    "build": "vite build",
+    "preview": "vite preview",
+    "prepare": "svelte-kit sync || echo ''",
+    "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+    "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+    "contract:emit": "prisma contract emit",
+    "postinstall": "prisma skills sync || exit 0"
+  },
+  "devDependencies": {
+    "@prisma/cli-engine": "^0.4.0",
+    "@sveltejs/adapter-auto": "^8.0.0-next.3",
+    "@sveltejs/kit": "^3.0.0-next.27",
+    "@sveltejs/vite-plugin-svelte": "^7.2.0",
+    "@tailwindcss/forms": "^0.5.11",
+    "@tailwindcss/typography": "^0.5.19",
+    "@tailwindcss/vite": "^4.3.0",
+    "@types/node": "^26.5.1",
+    "@types/pg": "^8.23.1",
+    "prisma": "^8.0.0-rc.15",
+    "svelte": "^5.56.7",
+    "svelte-check": "^4.6.0",
+    "tailwindcss": "^4.3.0",
+    "tsx": "^4.23.13",
+    "typescript": "^6.0.3",
+    "vite": "^8.1.5"
+  },
+  "imports": {
+    "#lib": "./src/lib/index.js",
+    "#lib/*": "./src/lib/*"
+  },
+  "dependencies": {
+    "@grilymannen/grily-utils": "github:grilymannen/grily-utils",
+    "@prisma/adapter-pg": "^7.10.0",
+    "@prisma/client": "^7.10.0",
+    "@prisma/orm-postgres": "^8.0.0-rc.11",
+    "@sveltejs/adapter-node": "^6.0.0-next.12",
+    "dotenv": "^17.4.2",
+    "pg": "^8.23.0",
+    "valibot": "^1.4.2"
+  }
 }
