@@ -9,10 +9,28 @@ model Todo {
     completed   Boolean     @default(false)
 }
 
+model User {
+    id          String      @unique @id @default(uuid())
+    name        String 
+
+    salt        String
+    hash        String
+
+    forums      Forum[]       
+    messages    Message[]
+
+    created_at  DateTime    @default(now())
+}
+
 model Forum {
     id          String      @unique @id @default(uuid())
     text        String
+
     messages    Message[]
+
+    user        User        @relation(fields: [userid], references: [id])
+    userid      String      
+
     created_at  DateTime    @default(now())
 
 }
@@ -20,16 +38,21 @@ model Forum {
 model Message {
     id          String      @unique @id @default(uuid())
     text        String
+
     forum       Forum       @relation(fields: [forumid], references: [id])
     forumid     String
+
+    user        User        @relation(fields: [userid], references: [id])
+    userid      String
+
     created_at  DateTime    @default(now())
     updated_at  DateTime    @default(now()) 
 }
 
-model User {
+model Session {
     id          String      @unique @id @default(uuid())
-    name        String      
-    salt        String
-    hash        String
-    created_at  DateTime    @default(now())
+    expires     DateTime
+
+    user        User        @relation(fields: [userid], references: [id])
+    userid      String
 }

@@ -1,16 +1,31 @@
 import { redirect } from "@sveltejs/kit";
 import type { LayoutServerLoad } from "./$types";
+import { db } from "../prisma/db";
 
 export const load = (async ({ cookies, url }) => {
-  let logged_in = cookies.get("logged_in");
-  if (logged_in !== "yep" && url.pathname !== "/login") {
-    cookies.set("logged_in", "nope", {path: "/", httpOnly: true});
-    redirect(303, "/login");
+  const id = cookies.get("session")
+  const onAccountPage =
+    url.pathname !== "/login" &&
+    url.pathname !== "/register";
+
+  const session = await db.orm.public.Session.first({ id });
+  if (session === null && onAccountPage) {
+    redirect(303, "/login")
   }
-  if (logged_in === "yep" && url.pathname === "/login") {
-    redirect(303, "/")
+  if (!session) return;
+  let { expires } = session;
+  let now = Temporal.Now.instant()
+  const isExpired = Temporal.Instant.compare(expires, now) < 0;
+
+  if (isExpired) {
+    redirect(303, "/login")
   }
+  expires = now.add({ days: 5 })
+  await db.orm.public.Session.where({ id }).update({ expires });
+  // Code past here is being worked on so ignore it
+  
 }) satisfies LayoutServerLoad;
+
 
 
 /**
@@ -20,9 +35,6 @@ export const load = (async ({ cookies, url }) => {
  * ║ /login │ ---        ->/  ║
  * ║ /[]    │ ->/login   ---  ║
  * ╚════════╧═════════════════╝
- * 
- * 
- * 
  * 
  * -> = Go to path
  * 

@@ -34,9 +34,9 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'45ff911ce1e1c0f9296f4cf103eb31b863d858a4a8278eae4a72fd41304db849'>;
+  StorageHashBase<'ad00433acfd21d3adfc877872941eed9824603e43c0ca714992ce09ec1893ce7'>;
 export type ExecutionHash =
-  ExecutionHashBase<'e530324146d544f6df6926ba7a8e4dd6d1c485465e6e2699633226f557d1e2dc'>;
+  ExecutionHashBase<'6f2e9e6c119d8f6fe84c13b4cba09d42fa21541156ea5e67f38ff8ea42f3a4af'>;
 export type ProfileHash =
   ProfileHashBase<'3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2'>;
 
@@ -245,21 +245,14 @@ export type FieldOutputTypes = {
     readonly Forum: {
       readonly id: CodecTypes['pg/text@1']['output'];
       readonly text: CodecTypes['pg/text@1']['output'];
-      readonly userid: CodecTypes['pg/text@1']['output'];
       readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
     };
     readonly Message: {
       readonly id: CodecTypes['pg/text@1']['output'];
       readonly text: CodecTypes['pg/text@1']['output'];
       readonly forumid: CodecTypes['pg/text@1']['output'];
-      readonly userid: CodecTypes['pg/text@1']['output'];
       readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
       readonly updated_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
-    };
-    readonly Session: {
-      readonly id: CodecTypes['pg/text@1']['output'];
-      readonly expires: CodecTypes['pg/timestamptz-temporal@1']['output'];
-      readonly userid: CodecTypes['pg/text@1']['output'];
     };
     readonly Todo: {
       readonly id: CodecTypes['pg/text@1']['output'];
@@ -280,21 +273,14 @@ export type FieldInputTypes = {
     readonly Forum: {
       readonly id: CodecTypes['pg/text@1']['input'];
       readonly text: CodecTypes['pg/text@1']['input'];
-      readonly userid: CodecTypes['pg/text@1']['input'];
       readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
     };
     readonly Message: {
       readonly id: CodecTypes['pg/text@1']['input'];
       readonly text: CodecTypes['pg/text@1']['input'];
       readonly forumid: CodecTypes['pg/text@1']['input'];
-      readonly userid: CodecTypes['pg/text@1']['input'];
       readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
       readonly updated_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
-    };
-    readonly Session: {
-      readonly id: CodecTypes['pg/text@1']['input'];
-      readonly expires: CodecTypes['pg/timestamptz-temporal@1']['input'];
-      readonly userid: CodecTypes['pg/text@1']['input'];
     };
     readonly Todo: {
       readonly id: CodecTypes['pg/text@1']['input'];
@@ -316,7 +302,6 @@ export type StorageColumnTypes = {
       readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
       readonly id: CodecTypes['pg/text@1']['output'];
       readonly text: CodecTypes['pg/text@1']['output'];
-      readonly userid: CodecTypes['pg/text@1']['output'];
     };
     readonly message: {
       readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
@@ -324,12 +309,6 @@ export type StorageColumnTypes = {
       readonly id: CodecTypes['pg/text@1']['output'];
       readonly text: CodecTypes['pg/text@1']['output'];
       readonly updated_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
-      readonly userid: CodecTypes['pg/text@1']['output'];
-    };
-    readonly session: {
-      readonly expires: CodecTypes['pg/timestamptz-temporal@1']['output'];
-      readonly id: CodecTypes['pg/text@1']['output'];
-      readonly userid: CodecTypes['pg/text@1']['output'];
     };
     readonly todo: {
       readonly completed: CodecTypes['pg/bool@1']['output'];
@@ -351,7 +330,6 @@ export type StorageColumnInputTypes = {
       readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
       readonly id: CodecTypes['pg/text@1']['input'];
       readonly text: CodecTypes['pg/text@1']['input'];
-      readonly userid: CodecTypes['pg/text@1']['input'];
     };
     readonly message: {
       readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
@@ -359,12 +337,6 @@ export type StorageColumnInputTypes = {
       readonly id: CodecTypes['pg/text@1']['input'];
       readonly text: CodecTypes['pg/text@1']['input'];
       readonly updated_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
-      readonly userid: CodecTypes['pg/text@1']['input'];
-    };
-    readonly session: {
-      readonly expires: CodecTypes['pg/timestamptz-temporal@1']['input'];
-      readonly id: CodecTypes['pg/text@1']['input'];
-      readonly userid: CodecTypes['pg/text@1']['input'];
     };
     readonly todo: {
       readonly completed: CodecTypes['pg/bool@1']['input'];
@@ -410,11 +382,6 @@ type ContractBase = Omit<
                   readonly codecId: 'pg/text@1';
                   readonly nullable: false;
                 };
-                readonly userid: {
-                  readonly nativeType: 'text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: false;
-                };
                 readonly created_at: {
                   readonly nativeType: 'timestamptz';
                   readonly codecId: 'pg/timestamptz-temporal@1';
@@ -424,28 +391,8 @@ type ContractBase = Omit<
               };
               primaryKey: { readonly columns: readonly ['id'] };
               uniques: readonly [{ readonly columns: readonly ['id'] }];
-              indexes: readonly [
-                {
-                  readonly name: 'forum_userid_idx_dbef1505';
-                  readonly prefix: 'forum_userid_idx';
-                  readonly columns: readonly ['userid'];
-                  readonly unique: false;
-                },
-              ];
-              foreignKeys: readonly [
-                {
-                  readonly source: {
-                    readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'forum';
-                    readonly columns: readonly ['userid'];
-                  };
-                  readonly target: {
-                    readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'user';
-                    readonly columns: readonly ['id'];
-                  };
-                },
-              ];
+              indexes: readonly [];
+              foreignKeys: readonly [];
             };
             readonly message: {
               columns: {
@@ -460,11 +407,6 @@ type ContractBase = Omit<
                   readonly nullable: false;
                 };
                 readonly forumid: {
-                  readonly nativeType: 'text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: false;
-                };
-                readonly userid: {
                   readonly nativeType: 'text';
                   readonly codecId: 'pg/text@1';
                   readonly nullable: false;
@@ -491,12 +433,6 @@ type ContractBase = Omit<
                   readonly columns: readonly ['forumid'];
                   readonly unique: false;
                 },
-                {
-                  readonly name: 'message_userid_idx_dbef1505';
-                  readonly prefix: 'message_userid_idx';
-                  readonly columns: readonly ['userid'];
-                  readonly unique: false;
-                },
               ];
               foreignKeys: readonly [
                 {
@@ -508,61 +444,6 @@ type ContractBase = Omit<
                   readonly target: {
                     readonly namespaceId: 'public' & NamespaceId;
                     readonly tableName: 'forum';
-                    readonly columns: readonly ['id'];
-                  };
-                },
-                {
-                  readonly source: {
-                    readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'message';
-                    readonly columns: readonly ['userid'];
-                  };
-                  readonly target: {
-                    readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'user';
-                    readonly columns: readonly ['id'];
-                  };
-                },
-              ];
-            };
-            readonly session: {
-              columns: {
-                readonly id: {
-                  readonly nativeType: 'text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: false;
-                };
-                readonly expires: {
-                  readonly nativeType: 'timestamptz';
-                  readonly codecId: 'pg/timestamptz-temporal@1';
-                  readonly nullable: false;
-                };
-                readonly userid: {
-                  readonly nativeType: 'text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: false;
-                };
-              };
-              primaryKey: { readonly columns: readonly ['id'] };
-              uniques: readonly [{ readonly columns: readonly ['id'] }];
-              indexes: readonly [
-                {
-                  readonly name: 'session_userid_idx_dbef1505';
-                  readonly prefix: 'session_userid_idx';
-                  readonly columns: readonly ['userid'];
-                  readonly unique: false;
-                },
-              ];
-              foreignKeys: readonly [
-                {
-                  readonly source: {
-                    readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'session';
-                    readonly columns: readonly ['userid'];
-                  };
-                  readonly target: {
-                    readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'user';
                     readonly columns: readonly ['id'];
                   };
                 },
@@ -641,10 +522,9 @@ type ContractBase = Omit<
   readonly targetFamily: 'sql';
   readonly roots: {
     readonly todo: { readonly namespace: 'public' & NamespaceId; readonly model: 'Todo' };
-    readonly user: { readonly namespace: 'public' & NamespaceId; readonly model: 'User' };
     readonly forum: { readonly namespace: 'public' & NamespaceId; readonly model: 'Forum' };
     readonly message: { readonly namespace: 'public' & NamespaceId; readonly model: 'Message' };
-    readonly session: { readonly namespace: 'public' & NamespaceId; readonly model: 'Session' };
+    readonly user: { readonly namespace: 'public' & NamespaceId; readonly model: 'User' };
   };
   readonly domain: {
     readonly namespaces: {
@@ -657,10 +537,6 @@ type ContractBase = Omit<
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
               readonly text: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-              readonly userid: {
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
@@ -684,14 +560,6 @@ type ContractBase = Omit<
                   readonly targetFields: readonly ['forumid'];
                 };
               };
-              readonly user: {
-                readonly to: { readonly namespace: 'public' & NamespaceId; readonly model: 'User' };
-                readonly cardinality: 'N:1';
-                readonly on: {
-                  readonly localFields: readonly ['userid'];
-                  readonly targetFields: readonly ['id'];
-                };
-              };
             };
             readonly storage: {
               readonly table: 'forum';
@@ -699,7 +567,6 @@ type ContractBase = Omit<
               readonly fields: {
                 readonly id: { readonly column: 'id' };
                 readonly text: { readonly column: 'text' };
-                readonly userid: { readonly column: 'userid' };
                 readonly created_at: { readonly column: 'created_at' };
               };
             };
@@ -715,10 +582,6 @@ type ContractBase = Omit<
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
               readonly forumid: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-              readonly userid: {
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
@@ -749,14 +612,6 @@ type ContractBase = Omit<
                   readonly targetFields: readonly ['id'];
                 };
               };
-              readonly user: {
-                readonly to: { readonly namespace: 'public' & NamespaceId; readonly model: 'User' };
-                readonly cardinality: 'N:1';
-                readonly on: {
-                  readonly localFields: readonly ['userid'];
-                  readonly targetFields: readonly ['id'];
-                };
-              };
             };
             readonly storage: {
               readonly table: 'message';
@@ -765,47 +620,8 @@ type ContractBase = Omit<
                 readonly id: { readonly column: 'id' };
                 readonly text: { readonly column: 'text' };
                 readonly forumid: { readonly column: 'forumid' };
-                readonly userid: { readonly column: 'userid' };
                 readonly created_at: { readonly column: 'created_at' };
                 readonly updated_at: { readonly column: 'updated_at' };
-              };
-            };
-          };
-          readonly Session: {
-            readonly fields: {
-              readonly id: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-              readonly expires: {
-                readonly nullable: false;
-                readonly type: {
-                  readonly kind: 'scalar';
-                  readonly codecId: 'pg/timestamptz-temporal@1';
-                };
-              };
-              readonly userid: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-            };
-            readonly relations: {
-              readonly user: {
-                readonly to: { readonly namespace: 'public' & NamespaceId; readonly model: 'User' };
-                readonly cardinality: 'N:1';
-                readonly on: {
-                  readonly localFields: readonly ['userid'];
-                  readonly targetFields: readonly ['id'];
-                };
-              };
-            };
-            readonly storage: {
-              readonly table: 'session';
-              readonly namespaceId: 'public';
-              readonly fields: {
-                readonly id: { readonly column: 'id' };
-                readonly expires: { readonly column: 'expires' };
-                readonly userid: { readonly column: 'userid' };
               };
             };
           };
@@ -861,30 +677,7 @@ type ContractBase = Omit<
                 };
               };
             };
-            readonly relations: {
-              readonly forums: {
-                readonly to: {
-                  readonly namespace: 'public' & NamespaceId;
-                  readonly model: 'Forum';
-                };
-                readonly cardinality: '1:N';
-                readonly on: {
-                  readonly localFields: readonly ['id'];
-                  readonly targetFields: readonly ['userid'];
-                };
-              };
-              readonly messages: {
-                readonly to: {
-                  readonly namespace: 'public' & NamespaceId;
-                  readonly model: 'Message';
-                };
-                readonly cardinality: '1:N';
-                readonly on: {
-                  readonly localFields: readonly ['id'];
-                  readonly targetFields: readonly ['userid'];
-                };
-              };
-            };
+            readonly relations: Record<string, never>;
             readonly storage: {
               readonly table: 'user';
               readonly namespaceId: 'public';
@@ -936,14 +729,6 @@ type ContractBase = Omit<
           readonly ref: {
             readonly namespace: 'public';
             readonly table: 'message';
-            readonly column: 'id';
-          };
-          readonly onCreate: { readonly kind: 'generator'; readonly id: 'uuidv4' };
-        },
-        {
-          readonly ref: {
-            readonly namespace: 'public';
-            readonly table: 'session';
             readonly column: 'id';
           };
           readonly onCreate: { readonly kind: 'generator'; readonly id: 'uuidv4' };

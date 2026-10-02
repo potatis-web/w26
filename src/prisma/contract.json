@@ -12,6 +12,10 @@
       "model": "Message",
       "namespace": "public"
     },
+    "session": {
+      "model": "Session",
+      "namespace": "public"
+    },
     "todo": {
       "model": "Todo",
       "namespace": "public"
@@ -47,6 +51,13 @@
                   "codecId": "pg/text@1",
                   "kind": "scalar"
                 }
+              },
+              "userid": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
               }
             },
             "relations": {
@@ -64,6 +75,22 @@
                   "model": "Message",
                   "namespace": "public"
                 }
+              },
+              "user": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "userid"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "User",
+                  "namespace": "public"
+                }
               }
             },
             "storage": {
@@ -76,6 +103,9 @@
                 },
                 "text": {
                   "column": "text"
+                },
+                "userid": {
+                  "column": "userid"
                 }
               },
               "namespaceId": "public",
@@ -118,6 +148,13 @@
                   "codecId": "pg/timestamptz-temporal@1",
                   "kind": "scalar"
                 }
+              },
+              "userid": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
               }
             },
             "relations": {
@@ -134,6 +171,22 @@
                 },
                 "to": {
                   "model": "Forum",
+                  "namespace": "public"
+                }
+              },
+              "user": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "userid"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "User",
                   "namespace": "public"
                 }
               }
@@ -154,10 +207,71 @@
                 },
                 "updated_at": {
                   "column": "updated_at"
+                },
+                "userid": {
+                  "column": "userid"
                 }
               },
               "namespaceId": "public",
               "table": "message"
+            }
+          },
+          "Session": {
+            "fields": {
+              "expires": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "userid": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "user": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "userid"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "User",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "expires": {
+                  "column": "expires"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "userid": {
+                  "column": "userid"
+                }
+              },
+              "namespaceId": "public",
+              "table": "session"
             }
           },
           "Todo": {
@@ -239,7 +353,38 @@
                 }
               }
             },
-            "relations": {},
+            "relations": {
+              "forums": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "userid"
+                  ]
+                },
+                "to": {
+                  "model": "Forum",
+                  "namespace": "public"
+                }
+              },
+              "messages": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "userid"
+                  ]
+                },
+                "to": {
+                  "model": "Message",
+                  "namespace": "public"
+                }
+              }
+            },
             "storage": {
               "fields": {
                 "created_at": {
@@ -291,10 +436,41 @@
                   "codecId": "pg/text@1",
                   "nativeType": "text",
                   "nullable": false
+                },
+                "userid": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
                 }
               },
-              "foreignKeys": [],
-              "indexes": [],
+              "foreignKeys": [
+                {
+                  "source": {
+                    "columns": [
+                      "userid"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "forum"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "user"
+                  }
+                }
+              ],
+              "indexes": [
+                {
+                  "columns": [
+                    "userid"
+                  ],
+                  "name": "forum_userid_idx_dbef1505",
+                  "prefix": "forum_userid_idx",
+                  "unique": false
+                }
+              ],
               "primaryKey": {
                 "columns": [
                   "id"
@@ -342,6 +518,11 @@
                   },
                   "nativeType": "timestamptz",
                   "nullable": false
+                },
+                "userid": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
                 }
               },
               "foreignKeys": [
@@ -360,6 +541,22 @@
                     "namespaceId": "public",
                     "tableName": "forum"
                   }
+                },
+                {
+                  "source": {
+                    "columns": [
+                      "userid"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "message"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "user"
+                  }
                 }
               ],
               "indexes": [
@@ -369,6 +566,73 @@
                   ],
                   "name": "message_forumid_idx_b2432a5a",
                   "prefix": "message_forumid_idx",
+                  "unique": false
+                },
+                {
+                  "columns": [
+                    "userid"
+                  ],
+                  "name": "message_userid_idx_dbef1505",
+                  "prefix": "message_userid_idx",
+                  "unique": false
+                }
+              ],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ]
+              },
+              "uniques": [
+                {
+                  "columns": [
+                    "id"
+                  ]
+                }
+              ]
+            },
+            "session": {
+              "columns": {
+                "expires": {
+                  "codecId": "pg/timestamptz-temporal@1",
+                  "nativeType": "timestamptz",
+                  "nullable": false
+                },
+                "id": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                },
+                "userid": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "source": {
+                    "columns": [
+                      "userid"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "session"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "user"
+                  }
+                }
+              ],
+              "indexes": [
+                {
+                  "columns": [
+                    "userid"
+                  ],
+                  "name": "session_userid_idx_dbef1505",
+                  "prefix": "session_userid_idx",
                   "unique": false
                 }
               ],
@@ -475,10 +739,10 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "ad00433acfd21d3adfc877872941eed9824603e43c0ca714992ce09ec1893ce7"
+    "storageHash": "45ff911ce1e1c0f9296f4cf103eb31b863d858a4a8278eae4a72fd41304db849"
   },
   "execution": {
-    "executionHash": "6f2e9e6c119d8f6fe84c13b4cba09d42fa21541156ea5e67f38ff8ea42f3a4af",
+    "executionHash": "e530324146d544f6df6926ba7a8e4dd6d1c485465e6e2699633226f557d1e2dc",
     "mutations": {
       "defaults": [
         {
@@ -501,6 +765,17 @@
             "column": "id",
             "namespace": "public",
             "table": "message"
+          }
+        },
+        {
+          "onCreate": {
+            "id": "uuidv4",
+            "kind": "generator"
+          },
+          "ref": {
+            "column": "id",
+            "namespace": "public",
+            "table": "session"
           }
         },
         {
