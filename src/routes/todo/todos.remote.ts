@@ -1,5 +1,5 @@
 import { query, form, command } from '$app/server';
-import type { TodoType } from '#lib/types.ts';
+import type { TodoType } from '#lib/session.ts';
 import * as v from 'valibot';
 import { db } from '../../prisma/db';
 

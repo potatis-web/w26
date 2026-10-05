@@ -45,6 +45,6 @@ async function hashPassword(password: string, salt: string) {
 }
 
 async function createSession(userid: string) {
-  const expires = Temporal.Now.instant().add({ days: 5 })
+  const expires = Temporal.Now.instant().add({ hours: 5 * 24 })
   return await db.orm.public.Session.create({ userid, expires })
 }

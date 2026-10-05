@@ -6,7 +6,7 @@
 
   // const forum = $derived(await getForumById(params.id));
   const { text, forumid } = createMessage.fields;
-  function formatTemporal(instant: Temporal.Instant | undefined): string {
+  function formatTemporal(instant: Temporal.Instant): string {
     if (!instant) return "";
     const now = Temporal.Now.zonedDateTimeISO()
     const ztd = instant.toZonedDateTimeISO(Temporal.Now.timeZoneId())
@@ -26,18 +26,18 @@
 </script>
 <main class="prose h-screen flex flex-col p-4">
   <a href={"/forum"}>Back to Forums</a>
-    {#if params.id}
-      {let forum = $derived(await getForumText(params.id))}
-      <h1>{forum?.text ?? "a"}</h1>
-      <h2>created: <i>{formatTemporal(forum?.created_at)}</i></h2>
+  {#if params.id}
+    {let forum = $derived(await getForumText(params.id))}
+    {#if forum}
+      <h1>{forum.text}</h1>
+      <h2>Created: <i>{formatTemporal(forum.created_at)}</i></h2>
       <h2>Messages</h2>
       <div class="overflow-y-scroll flex-1">
         {#each await getMessages(params.id) as message}
-        <div class="flex item-center p-2 hover:bg-black/10 rounded ">
-        
-          <p class="text-black/50">{formatTemporal(message.created_at)}</p>
-          <h3 class="">{message.text}</h3>
-        </div>
+          <div class="flex item-center p-2 hover:bg-black/10 rounded ">
+            <p class="text-black/50">{formatTemporal(message.created_at)}</p>
+            <h3 class="">{message.text}</h3>
+          </div>
         {/each}
       </div>
       
@@ -45,5 +45,8 @@
         <input {...text.as("text")} class="w-1/1" autocomplete="off">
         <input {...forumid.as("hidden", params.id)} >
       </form>
+    {:else}
+      <h1>Forum error</h1>
     {/if}
+  {/if}
 </main>
