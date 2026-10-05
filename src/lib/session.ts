@@ -1,5 +1,5 @@
 import type { Cookies } from "@sveltejs/kit";
-import { db } from "../prisma/db";
+import { pdb } from "../prisma/db";
 
 const HOURS_IN_DAY = 24;
 const SESSION_COOKIE = "session";
@@ -10,7 +10,7 @@ const SESSION_HOURS = SESSION_DAYS * HOURS_IN_DAY;
 export async function getSessionFromCookies(cookies: Cookies) {
   const id = cookies.get(SESSION_COOKIE)
   if (!id) return null;
-  return await db.orm.public.Session.first({ id });
+  return await pdb.Session.first({ id });
 }
 
 export function isExpired(instant: Temporal.InstantLike) {
@@ -21,5 +21,5 @@ export function isExpired(instant: Temporal.InstantLike) {
 export async function extendSession(id: string) {
   const now = Temporal.Now.instant();
   const expires = now.add({ hours: SESSION_HOURS});
-  await db.orm.public.Session.where({ id }).update({ expires });
+  await pdb.Session.where({ id }).update({ expires });
 }

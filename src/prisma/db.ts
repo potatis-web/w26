@@ -7,3 +7,6 @@ export const db = postgres<Contract>({
   contractJson,
   url: process.env['DATABASE_URL']!,
 });
+
+/** Shorthand for ``db.orm.public`` */
+export const pdb = db.orm.public;
