@@ -1,21 +1,22 @@
 <script>
   import { signup } from "../account.remote";
 
+  import Input from "#lib/components/Input.svelte";
+  import Label from "#lib/components/Label.svelte";
+  import Button from "#lib/components/Button.svelte";
+  import Card from "#lib/components/Card.svelte"
   const { name, password } = signup.fields;
 </script>
 
-<main class="prose">
-  <h1>Register</h1>
-  <form {...signup}>
-    <label>
-      <h2>Username: </h2>
-      <input {...name.as("text")}>
-    </label>
-    <label>
-      <h2>Password: </h2>
-      <input {...password.as("password")}>
-    </label>
-    <button type="submit">Register</button>
+
+<Card class="mx-auto max-w-sm">
+  <h1 class="mb-4 text-xl font-medium">Register</h1>
+  <form {...signup} class="flex flex-col gap-4">
+    <Label label="Username"><Input {...name.as("text")} /></Label>
+    <Label label="Password"><Input {...password.as("password")} /></Label>
+    <Button text="Register" />
   </form>
-  <p>Already have an account? <a href={"/login"}>Log in here!</a></p>
-</main>
+  <p class="mt-4 text-sm text-gray-500">
+    Already have an account? <a href="/login" class="underline">Log in!</a>
+  </p>
+</Card>

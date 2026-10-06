@@ -1,4 +1,6 @@
 <script>
+  import Button from "#lib/components/Button.svelte";
+  import Input from "#lib/components/Input.svelte";
   import { getForums, createForum } from "./forum.remote";
   let { text } = createForum.fields
 </script>
@@ -12,7 +14,8 @@
       </li>
     {/each}
   </ul>
-  <form {...createForum}>
-    <input {...text.as("text")} autocomplete="off">
+  <form {...createForum} class="flex gap-2">
+    <Input {...text.as("text")}/>
+    <Button text={"Create forum"}/>
   </form>
 </article>
