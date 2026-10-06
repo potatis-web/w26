@@ -5,7 +5,14 @@ import { redirect } from "@sveltejs/kit";
 import { extendSession, getSessionFromCookies, isExpired } from "#lib/session.ts";
 import { stringSchema } from "#lib/validate.ts";
 
-export const getForums = query(async () => await pdb.Forum.all());
+export const getForums = query(
+  async () => {
+    return await pdb.Forum
+      .include("messages", (messages) => {
+        return messages.count()
+      })
+      .all();
+  });
 
 export const getUser = query(
   stringSchema,

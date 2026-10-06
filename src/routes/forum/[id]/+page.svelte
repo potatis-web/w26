@@ -1,6 +1,7 @@
 <script lang="ts">
   import { getForum, createMessage, getMessages, getUser } from "../forum.remote";
-
+  import Input from "#lib/components/Input.svelte";
+  import Button from "#lib/components/Button.svelte";
   
   let { params } = $props()
   
@@ -27,36 +28,33 @@
   }
 
 </script>
-<main class="prose h-screen flex flex-col p-4">
-  <a href={"/forum"}>Back to Forums</a>
+<main class="mx-auto flex h-90% max-w-2xl flex-col px-4 py-6">
   {#if params.id}
     {#if forum}
-      <h1>{forum.text}</h1>
-      <h2>Created: <i>{formatTemporal(forum.created_at)}</i></h2>
-      <h2>Messages</h2>
-      <div class="overflow-y-scroll flex-1">
+      <header class="mb-4">
+        <h1 class="text-xl font-medium">{forum.text}</h1>
+        <p class="text-sm text-gray-500">Created {formatTemporal(forum.created_at)}</p>
+      </header>
+
+      <div class="flex-1 divide-y divide-gray-200 overflow-y-auto rounded-md border border-gray-300">
         {#each await getMessages(params.id) as message}
-          <div class="flex items-center gap-2 px-2 py-1 hover:bg-black/5 rounded">
-            <span class="text-xs text-black/40">
-              {formatTemporal(message.created_at)}
-            </span>
-            <span class="font-medium">
-              {message.user?.name ?? "Unknown user"}:
-            </span>
-            <span>{message.text}</span>
+          <div class="px-3 py-2 hover:bg-gray-50">
+            <p class="text-sm">
+              <span class="font-medium">{message.user?.name ?? "Unknown user"}</span>
+              <span class="ml-1 text-xs text-gray-400">{formatTemporal(message.created_at)}</span>
+            </p>
+            <p class="text-sm wrap-break-words">{message.text}</p>
           </div>
         {/each}
       </div>
-      <form {...createMessage}>
-        <input
-          {...text.as("text")}
-          class="w-full rounded border border-gray-300 px-3 py-2 outline-none focus:border-blue-500"
-          autocomplete="off"
-        />
-        <input {...forumid.as("hidden", params.id)} >
+
+      <form {...createMessage} class="mt-4">
+        <Input {...text.as("text")} />
+        <Button text={"Send"}/>
+        <input {...forumid.as("hidden", params.id)} />
       </form>
     {:else}
-      <h1>Forum error</h1>
+      <p class="text-sm text-gray-500">Forum error</p>
     {/if}
   {/if}
 </main>
