@@ -13,7 +13,7 @@ export async function getSessionFromCookies(cookies: Cookies) {
   return await pdb.Session.first({ id });
 }
 
-export function isExpired(instant: Temporal.InstantLike) {
+export function isExpired(instant: Temporal.InstantLike): boolean {
   const now = Temporal.Now.instant();
   return Temporal.Instant.compare(instant, now) < 0;
 }

@@ -18,6 +18,7 @@ model User {
 
     forums      Forum[]       
     messages    Message[]
+    sessions    Session[]
 
     created_at  DateTime    @default(now())
 }

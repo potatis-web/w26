@@ -5,6 +5,7 @@
 </script>
 
 <div class="w-1/2 p-2 prose">
+	<a href={"/"}>Back to home</a>
 	{#each await getTodos() as todo, i (todo.id)}
     {let shown = $state(false)}
     

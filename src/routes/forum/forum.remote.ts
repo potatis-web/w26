@@ -2,37 +2,60 @@ import { query, form, getRequestEvent } from "$app/server";
 import * as v from 'valibot'
 import { pdb } from "../../prisma/db";
 import { redirect } from "@sveltejs/kit";
+import { extendSession, getSessionFromCookies, isExpired } from "#lib/session.ts";
+import { stringSchema } from "#lib/validate.ts";
 
 export const getForums = query(async () => await pdb.Forum.all());
 
-
-export const getForumText = query(v.string(), async (id: string) => {
-  return await pdb.Forum.where({ id }).first();
+export const getUser = query(
+  stringSchema,
+  async (id) => {
+    return await pdb.User.first({ id });
 });
 
-export const getMessages = query(v.string(), async (forumid: string) => {
-  return await pdb.Message.where({ forumid }).all();
+export const getForum = query(
+  stringSchema, 
+  async (id: string) => {
+    return await pdb.Forum.first({ id });
 });
 
-export const createMessage = form(v.object({
-  text: v.string(), 
-  forumid: v.string()
-}), async ({ text, forumid }) => {
-  await pdb.Message.create({ forumid, text })
+
+export const getMessages = query(stringSchema, async (forumid: string) => {
+  return await pdb.Message
+    .where({ forumid })
+    .include("user", (user) => {
+      return user.select("name")
+    })
+    .all();
 });
 
-export const createForum = form(v.object({
-  text: v.string()
-}), async ({ text }) => {
-  const { cookies } = getRequestEvent()
-  const id = cookies.get("session")
-  const session = await pdb.Session.first({ id });
-  if (!session) return;
-  let { expires, userid } = session;
-  let now = Temporal.Now.instant()
-  const isExpired = Temporal.Instant.compare(expires, now) < 0;
-  if (isExpired) {
-    redirect(303, "/login")
-  }
-  await pdb.Forum.create({ text, userid })
+export const createMessage = form(
+  v.object({
+    text: stringSchema, 
+    forumid: stringSchema,
+  }), 
+    async ({ text, forumid }) => {
+    const { cookies } = getRequestEvent();
+    const session = await getSessionFromCookies(cookies);
+    if (!session) redirect(303, "/login");
+
+    const { expires, userid, id } = session;
+    if (isExpired(expires)) redirect(303, "/login");
+    await extendSession(id)
+    await pdb.Message.create({ forumid, text, userid });
+});
+
+export const createForum = form(
+  v.object({
+    text: stringSchema
+  }),
+  async ({ text }) => {
+    const { cookies } = getRequestEvent();
+    const session = await getSessionFromCookies(cookies);
+    if (!session) redirect(303, "/login");
+
+    const { expires, userid, id } = session;
+    if (isExpired(expires)) redirect(303, "/login");
+    await extendSession(id)
+    await pdb.Forum.create({ text, userid })
 });

@@ -23,6 +23,7 @@ export const load = (async ({ cookies, url }) => {
 
 
 /**
+ * DEPRECATED
  * ╔════════╤═════════════════╗
  * ║        │ !auth      auth ║
  * ╟────────┼─────────────────╢

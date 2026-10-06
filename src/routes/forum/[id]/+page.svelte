@@ -1,11 +1,13 @@
 <script lang="ts">
-  import { getForumText, createMessage, getMessages } from "../forum.remote";
+  import { getForum, createMessage, getMessages, getUser } from "../forum.remote";
 
   
   let { params } = $props()
+  
+  let forum = $derived(await getForum(params.id));
 
-  // const forum = $derived(await getForumById(params.id));
   const { text, forumid } = createMessage.fields;
+  
   function formatTemporal(instant: Temporal.Instant): string {
     if (!instant) return "";
     const now = Temporal.Now.zonedDateTimeISO()
@@ -23,26 +25,34 @@
 
     return `${ztd.year}/${ztd.month}/${ztd.day}`
   }
+
 </script>
 <main class="prose h-screen flex flex-col p-4">
   <a href={"/forum"}>Back to Forums</a>
   {#if params.id}
-    {let forum = $derived(await getForumText(params.id))}
     {#if forum}
       <h1>{forum.text}</h1>
       <h2>Created: <i>{formatTemporal(forum.created_at)}</i></h2>
       <h2>Messages</h2>
       <div class="overflow-y-scroll flex-1">
         {#each await getMessages(params.id) as message}
-          <div class="flex item-center p-2 hover:bg-black/10 rounded ">
-            <p class="text-black/50">{formatTemporal(message.created_at)}</p>
-            <h3 class="">{message.text}</h3>
+          <div class="flex items-center gap-2 px-2 py-1 hover:bg-black/5 rounded">
+            <span class="text-xs text-black/40">
+              {formatTemporal(message.created_at)}
+            </span>
+            <span class="font-medium">
+              {message.user?.name ?? "Unknown user"}:
+            </span>
+            <span>{message.text}</span>
           </div>
         {/each}
       </div>
-      
       <form {...createMessage}>
-        <input {...text.as("text")} class="w-1/1" autocomplete="off">
+        <input
+          {...text.as("text")}
+          class="w-full rounded border border-gray-300 px-3 py-2 outline-none focus:border-blue-500"
+          autocomplete="off"
+        />
         <input {...forumid.as("hidden", params.id)} >
       </form>
     {:else}
