@@ -23,7 +23,11 @@ export const getUser = query(
 export const getForum = query(
   stringSchema, 
   async (id: string) => {
-    return await pdb.Forum.first({ id });
+    return await pdb.Forum.
+    include("user", (user) => {
+      return user.select("name")
+    })
+    .first({ id });
 });
 
 

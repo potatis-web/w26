@@ -13,7 +13,7 @@
     if (!instant) return "";
     const now = Temporal.Now.zonedDateTimeISO()
     const ztd = instant.toZonedDateTimeISO(Temporal.Now.timeZoneId())
-    const time = `${String(ztd.hour).padStart(2,"0")}:${ztd.minute}`
+    const time = `${String(ztd.hour).padStart(2,"0")}:${String(ztd.minute).padStart(2,"0")}`
 
     const isToday = now.year === ztd.year && now.dayOfYear === ztd.dayOfYear;
     const isYesterday = now.year === ztd.year && now.dayOfYear - 1 === ztd.dayOfYear; 
@@ -32,7 +32,8 @@
   {#if params.id}
     {#if forum}
       <header class="mb-4">
-        <h1 class="text-xl font-medium">{forum.text}</h1>
+        <h1 class="text-xl font-medium group">{forum.text} <Button text={"✍️"} /></h1>
+        <p class="text-sm">Created by {forum.user?.name}</p>
         <p class="text-sm text-gray-500">Created {formatTemporal(forum.created_at)}</p>
       </header>
 
@@ -48,10 +49,11 @@
         {/each}
       </div>
 
-      <form {...createMessage} class="mt-4">
-        <Input {...text.as("text")} />
+      <form {...createMessage} class="mt-4 flex gap-2">
+        <Input {...text.as("text")} class={"flex-1"} placeholder={"Type something..."}/>
         <Button text={"Send"}/>
         <input {...forumid.as("hidden", params.id)} />
+        
       </form>
     {:else}
       <p class="text-sm text-gray-500">Forum error</p>
