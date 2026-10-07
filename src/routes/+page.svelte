@@ -1,5 +1,13 @@
-<script>
-  let links = [
+<script lang="ts">
+  interface Link {
+    path: string;
+    text: string;
+  }
+  interface LinkWithNote extends Link {
+    note?: string;
+  }
+
+  let links: LinkWithNote[] = [
     { path: "/todo", text: "Todo page" },
     { path: "/forum", text: "Forum page" },
     { path: "/login", text: "Login page", note: "already logged in" },
