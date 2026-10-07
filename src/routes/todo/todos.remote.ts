@@ -1,17 +1,31 @@
-import { query, form, command } from '$app/server';
+import { query, form, command, getRequestEvent } from '$app/server';
 import * as v from 'valibot';
 import { pdb } from '../../prisma/db';
 import { stringSchema } from '#lib/validate.ts';
+import { getSessionFromCookies } from '#lib/session.ts';
+import { redirect } from '@sveltejs/kit';
 
+export const getTodos = query(
+	async () => {
+		const { cookies } = getRequestEvent()
+		const session = await getSessionFromCookies(cookies)
+		if (!session) redirect(303, "/login");
+		const { userid } = session
 
-export const getTodos = query(async () => await pdb.Todo.all());
+		return await pdb.Todo.where({ userid }).all()
+	});
 
 export const addTodo = form(
 	v.object({
 		text: stringSchema
 	}),
 	async ({ text }) => {
-		await pdb.Todo.create({ text });
+		const { cookies } = getRequestEvent()
+		const session = await getSessionFromCookies(cookies)
+		if (!session) redirect(303, "/login");
+
+		const { userid } = session;
+		await pdb.Todo.create({ text, userid });
 	}
 );
 

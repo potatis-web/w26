@@ -296,9 +296,33 @@
                   "codecId": "pg/text@1",
                   "kind": "scalar"
                 }
+              },
+              "userid": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
               }
             },
-            "relations": {},
+            "relations": {
+              "user": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "userid"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "User",
+                  "namespace": "public"
+                }
+              }
+            },
             "storage": {
               "fields": {
                 "completed": {
@@ -309,6 +333,9 @@
                 },
                 "text": {
                   "column": "text"
+                },
+                "userid": {
+                  "column": "userid"
                 }
               },
               "namespaceId": "public",
@@ -684,10 +711,41 @@
                   "codecId": "pg/text@1",
                   "nativeType": "text",
                   "nullable": false
+                },
+                "userid": {
+                  "codecId": "pg/text@1",
+                  "nativeType": "text",
+                  "nullable": false
                 }
               },
-              "foreignKeys": [],
-              "indexes": [],
+              "foreignKeys": [
+                {
+                  "source": {
+                    "columns": [
+                      "userid"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "Todo"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "User"
+                  }
+                }
+              ],
+              "indexes": [
+                {
+                  "columns": [
+                    "userid"
+                  ],
+                  "name": "Todo_userid_idx_dbef1505",
+                  "prefix": "Todo_userid_idx",
+                  "unique": false
+                }
+              ],
               "primaryKey": {
                 "columns": [
                   "id"
@@ -754,7 +812,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "f8269a4547a90b13c4984edbf478cd886cc4f5bfb72bca0747960eb661f8f452"
+    "storageHash": "e57c90bec40dc8a0f9c89adeb014e8f76395e13108c335b91d424a954bbf227b"
   },
   "execution": {
     "executionHash": "8d6c9ac5caddff417de8f5e0f8720c2a23c8ce91b99546921a6adbf149de7543",

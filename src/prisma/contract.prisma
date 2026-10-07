@@ -7,6 +7,9 @@ model Todo {
     id          String      @unique @id @default(uuid())
     text        String  
     completed   Boolean     @default(false)
+
+    user        User        @relation(fields: [userid], references: [id])
+    userid      String
 }
 
 model User {

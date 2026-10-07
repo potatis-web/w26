@@ -34,7 +34,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'e57c90bec40dc8a0f9c89adeb014e8f76395e13108c335b91d424a954bbf227b'>;
+  StorageHashBase<'f8269a4547a90b13c4984edbf478cd886cc4f5bfb72bca0747960eb661f8f452'>;
 export type ExecutionHash =
   ExecutionHashBase<'8d6c9ac5caddff417de8f5e0f8720c2a23c8ce91b99546921a6adbf149de7543'>;
 export type ProfileHash =
@@ -273,7 +273,6 @@ export type FieldOutputTypes = {
       readonly completed: CodecTypes['pg/bool@1']['output'];
       readonly id: CodecTypes['pg/text@1']['output'];
       readonly text: CodecTypes['pg/text@1']['output'];
-      readonly userid: CodecTypes['pg/text@1']['output'];
     };
     readonly User: {
       readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
@@ -309,7 +308,6 @@ export type FieldInputTypes = {
       readonly completed: CodecTypes['pg/bool@1']['input'];
       readonly id: CodecTypes['pg/text@1']['input'];
       readonly text: CodecTypes['pg/text@1']['input'];
-      readonly userid: CodecTypes['pg/text@1']['input'];
     };
     readonly User: {
       readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
@@ -345,7 +343,6 @@ export type StorageColumnTypes = {
       readonly completed: CodecTypes['pg/bool@1']['output'];
       readonly id: CodecTypes['pg/text@1']['output'];
       readonly text: CodecTypes['pg/text@1']['output'];
-      readonly userid: CodecTypes['pg/text@1']['output'];
     };
     readonly User: {
       readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
@@ -381,7 +378,6 @@ export type StorageColumnInputTypes = {
       readonly completed: CodecTypes['pg/bool@1']['input'];
       readonly id: CodecTypes['pg/text@1']['input'];
       readonly text: CodecTypes['pg/text@1']['input'];
-      readonly userid: CodecTypes['pg/text@1']['input'];
     };
     readonly User: {
       readonly created_at: CodecTypes['pg/timestamptz-temporal@1']['input'];
@@ -425,9 +421,7 @@ export namespace Models {
     completed: CodecTypes['pg/bool@1']['output'];
     id: CodecTypes['pg/text@1']['output'];
     text: CodecTypes['pg/text@1']['output'];
-    userid: CodecTypes['pg/text@1']['output'];
-    user: public_User;
-    readonly [RelationKeys]?: 'user';
+    readonly [RelationKeys]?: never;
   };
   export type public_User = {
     created_at: CodecTypes['pg/timestamptz-temporal@1']['output'];
@@ -661,36 +655,11 @@ type ContractBase = Omit<
                   readonly codecId: 'pg/text@1';
                   readonly nullable: false;
                 };
-                readonly userid: {
-                  readonly nativeType: 'text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: false;
-                };
               };
               primaryKey: { readonly columns: readonly ['id'] };
               uniques: readonly [{ readonly columns: readonly ['id'] }];
-              indexes: readonly [
-                {
-                  readonly name: 'Todo_userid_idx_dbef1505';
-                  readonly prefix: 'Todo_userid_idx';
-                  readonly columns: readonly ['userid'];
-                  readonly unique: false;
-                },
-              ];
-              foreignKeys: readonly [
-                {
-                  readonly source: {
-                    readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'Todo';
-                    readonly columns: readonly ['userid'];
-                  };
-                  readonly target: {
-                    readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'User';
-                    readonly columns: readonly ['id'];
-                  };
-                },
-              ];
+              indexes: readonly [];
+              foreignKeys: readonly [];
             };
             readonly User: {
               columns: {
@@ -924,22 +893,8 @@ type ContractBase = Omit<
                 readonly nullable: false;
                 readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
               };
-              readonly userid: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
             };
-            readonly relations: {
-              readonly user: {
-                readonly to: { readonly namespace: 'public' & NamespaceId; readonly model: 'User' };
-                readonly cardinality: 'N:1';
-                readonly nullable: false;
-                readonly on: {
-                  readonly localFields: readonly ['userid'];
-                  readonly targetFields: readonly ['id'];
-                };
-              };
-            };
+            readonly relations: Record<string, never>;
             readonly storage: {
               readonly table: 'Todo';
               readonly namespaceId: 'public';
@@ -947,7 +902,6 @@ type ContractBase = Omit<
                 readonly completed: { readonly column: 'completed' };
                 readonly id: { readonly column: 'id' };
                 readonly text: { readonly column: 'text' };
-                readonly userid: { readonly column: 'userid' };
               };
             };
           };
