@@ -2,7 +2,7 @@
   import Button from "#lib/components/Button.svelte";
   import Card from "#lib/components/Card.svelte";
   import Input from "#lib/components/Input.svelte";
-  import { getForums, createForum } from "./forum.remote";
+  import { getForums, createForum } from "#lib/remote/forum.remote";
   let { text } = createForum.fields
 </script>
 <Card>

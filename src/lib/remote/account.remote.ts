@@ -1,7 +1,7 @@
 import { form, getRequestEvent } from "$app/server";
 import { redirect } from "@sveltejs/kit";
 import * as v from "valibot";
-import { pdb } from "../prisma/db";
+import { pdb } from "../../prisma/db";
 
 const failedLogin = { success: false, text: "Wrong login credentials"}
 

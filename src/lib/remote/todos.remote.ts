@@ -1,8 +1,8 @@
 import { query, form, command, getRequestEvent } from '$app/server';
 import * as v from 'valibot';
 import { pdb } from '../../prisma/db';
-import { stringSchema } from '#lib/validate.ts';
-import { getSessionFromCookies } from '#lib/session.ts';
+import { stringSchema } from '../schema';
+import { getSessionFromCookies } from '../session';
 import { redirect } from '@sveltejs/kit';
 
 export const getTodos = query(

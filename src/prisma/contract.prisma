@@ -36,7 +36,6 @@ model Forum {
     userid      String      
 
     created_at  DateTime    @default(now())
-
 }
 
 model Message {

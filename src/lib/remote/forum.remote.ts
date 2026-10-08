@@ -2,8 +2,8 @@ import { query, form, getRequestEvent } from "$app/server";
 import * as v from 'valibot'
 import { pdb } from "../../prisma/db";
 import { redirect } from "@sveltejs/kit";
-import { extendSession, getSessionFromCookies, isExpired } from "#lib/session.ts";
-import { stringSchema } from "#lib/validate.ts";
+import { extendSession, getSessionFromCookies, isExpired } from "../session";
+import { stringSchema } from "../schema";
 
 export const getForums = query(
   async () => {
@@ -39,6 +39,8 @@ export const getMessages = query(stringSchema, async (forumid: string) => {
     })
     .all();
 });
+
+export type Message = Awaited<ReturnType<typeof getMessages>>[number];
 
 export const createMessage = form(
   v.object({
