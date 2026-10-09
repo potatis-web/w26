@@ -14,7 +14,6 @@
   ];
 </script>
 
-
 <h1 class="mb-4 text-xl font-medium">Pages</h1>
 <ul class="divide-y divide-gray-200 rounded-md border border-gray-300">
   {#each links as link}

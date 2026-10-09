@@ -2,12 +2,15 @@
   import { formatTemporal, tooltip } from "#lib/misc.js";
   import type { Message } from "../remote/forum.remote";
 
-  let { message }: { message: Message } = $props()
-
+  let { message }: { message: Message } = $props();
 </script>
+
 <div class="group relative px-3 py-2 hover:bg-gray-50">
   <p class="text-sm">
-  <span class="font-medium">{message.user?.name ?? "Unknown user"} <i {@attach tooltip(JSON.stringify(message.userid))}>ID</i></span>
+    <span class="font-medium"
+      >{message.user?.name ?? "Unknown user"}
+      <i {@attach tooltip(JSON.stringify(message.userid))}>ID</i></span
+    >
     <span class="ml-1 text-xs text-gray-400">
       {formatTemporal(message.created_at)}
     </span>

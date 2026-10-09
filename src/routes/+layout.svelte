@@ -1,8 +1,9 @@
 <script lang="ts">
-	import './layout.css';
-	import Page from "#lib/components/Page.svelte"
-	let { children } = $props();
+  import "./layout.css";
+  import Page from "#lib/components/Page.svelte";
+  let { children } = $props();
 </script>
+
 <nav class="border-b border-gray-300">
   <div class="mx-auto flex max-w-2xl gap-4 px-4 py-3 text-sm">
     <a href="/" class="hover:underline">Home</a>
@@ -12,5 +13,5 @@
 </nav>
 
 <Page>
-	{@render children()}
+  {@render children()}
 </Page>
