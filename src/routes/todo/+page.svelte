@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getTodos, addTodo, deleteTodo, toggleComplete } from '#lib/remote/todos.remote.ts';
+	import { getTodos, addTodo } from '#lib/remote/todos.remote.ts';
 
   import Button from '#lib/components/Button.svelte';
   import Card from '#lib/components/Card.svelte';
