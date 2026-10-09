@@ -2,7 +2,7 @@
   import Button from '#lib/components/Button.svelte';
   import Card from '#lib/components/Card.svelte';
   import Input from '#lib/components/Input.svelte';
-	import { getTodos, addTodo, deleteTodo, toggleComplete } from './todos.remote';
+	import { getTodos, addTodo, deleteTodo, toggleComplete } from '#lib/remote/todos.remote.ts';
   import { slide, fade } from 'svelte/transition';
 	let { text } = addTodo.fields;
 </script>

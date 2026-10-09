@@ -3,7 +3,7 @@
   import Card from "#lib/components/Card.svelte";
   import Input from "#lib/components/Input.svelte";
   import Label from "#lib/components/Label.svelte";
-  import { login } from "../account.remote";
+  import { login } from "#lib/remote/account.remote.ts";
   let { name, password } = login.fields;
 </script>
 

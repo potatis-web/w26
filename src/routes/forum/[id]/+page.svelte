@@ -2,8 +2,8 @@
   import Input from "#lib/components/Input.svelte";
   import Button from "#lib/components/Button.svelte";
   import Message from "#lib/components/Message.svelte";
-  import { getForum, createMessage, getMessages } from "#lib/remote/forum.remote.js";
-  import { formatTemporal } from "#lib/misc.js";
+  import { getForum, createMessage, getMessages } from "#lib/remote/forum.remote.ts";
+  import { formatTemporal } from "#lib/misc.ts";
   
   let { params } = $props()
   
