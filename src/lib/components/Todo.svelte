@@ -2,10 +2,11 @@
   import { deleteTodo, toggleComplete } from "#lib/remote/todos.remote.ts";
   import { fade, slide } from "svelte/transition";
   import type { Todo } from "#lib/remote/todos.remote.ts";
-  let { todo, i }: {todo: Todo, i: number} = $props()
+
+  type Props = {todo: Todo, i: number}
+  let { todo, i }: Props = $props()
 
   let shown: boolean = $state(false)
-
 </script>
 
 	<div
@@ -50,7 +51,6 @@
 				class="rounded p-1.5 text-sm opacity-60 hover:bg-black/5 hover:opacity-100 active:bg-black/10"
 				onclick={() => {
 					shown = !shown
-					console.log(`Text: ${todo.text}, ID: ${todo.id}`)
 				}}
 				aria-label="Show ID"
 			>
