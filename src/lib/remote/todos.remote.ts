@@ -5,6 +5,8 @@ import { stringSchema } from "../schema";
 import { getSessionFromCookies } from "../session";
 import { redirect } from "@sveltejs/kit";
 
+export type Todo = Awaited<ReturnType<typeof getTodos>>[number]
+
 export const getTodos = query(async () => {
   const { cookies } = getRequestEvent();
   const session = await getSessionFromCookies(cookies);

@@ -1,8 +1,8 @@
 <script lang="ts">
   import { deleteTodo, toggleComplete } from "#lib/remote/todos.remote.ts";
   import { fade, slide } from "svelte/transition";
-  
-  let { todo, i } = $props()
+  import type { Todo } from "#lib/remote/todos.remote.ts";
+  let { todo, i }: {todo: Todo, i: number} = $props()
 
   let shown: boolean = $state(false)
 
